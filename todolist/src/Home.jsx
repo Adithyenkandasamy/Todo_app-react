@@ -4,7 +4,7 @@ import axios from 'axios'
 import { BsCircleFill,BsFillCheckCircleFill,BsFillTrashFill } from "react-icons/bs";
 
 function Home() {
-    const [todos,setTodos] = useState([])
+    const [todos,setTodos] = useState([]);
     useEffect(()=>{
         axios.get('http://localhost:3001/get')
         .then(result => setTodos(result.data))
@@ -13,7 +13,7 @@ function Home() {
 
     const handleEdit = (id)=>{
         axios.put('http://localhost:3001/update/'+id)
-        .then(result => console.log(result))
+        .then(result=>console.log(result))
         .catch(err => console.log(err))
     }
 
@@ -29,13 +29,17 @@ function Home() {
             todos.map(todo => (
                 <div key={todo._id} className='task'>
                     <div className='checkbox' onClick={() => handleEdit(todo._id)}>
-                        <BsCircleFill
-                         className='icon'/>
+                        {todo.done ? <BsFillCheckCircleFill className='icon'></BsFillCheckCircleFill>
+                        : <BsCircleFill className='icon'/>
+                        }
                         <p>{todo.task}</p>
+                        
                     </div>
+                
                     <div>
-                        <span><BsFillTrashFill className='icon'/></span>
+                     <span><BsFillTrashFill className='icon'/></span>
                     </div>
+            
                 </div>
             ))
         }
