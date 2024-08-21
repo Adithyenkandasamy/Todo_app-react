@@ -17,6 +17,13 @@ function Home() {
         .catch(err => console.log(err))
     }
 
+    const handleDelete =(id) => {
+        axios.delete('http://localhost:3001/delete/'+id)
+        .then(result => {
+          location.reload()
+        })
+        .catch(err => console.log(err)) 
+      }
   return (
     <div className="home">
         <h2>Todo List</h2>
@@ -28,23 +35,28 @@ function Home() {
             :
             todos.map(todo => (
                 <div key={todo._id} className='task'>
-                    <div className='checkbox' onClick={() => handleEdit(todo._id)}>
-                        {todo.done ? <BsFillCheckCircleFill className='icon'></BsFillCheckCircleFill>
-                        : <BsCircleFill className='icon'/>
-                        }
-                        <p>{todo.task}</p>
-                        
-                    </div>
+                  <div className='checkbox' onClick={()=> handleEdit(todo._id)}>
+                  {todo.done?
+                  <BsFillCheckCircleFill className='icon'></BsFillCheckCircleFill>
+                    : <BsCircleFill className='icon'/>
+                }
+                 
+                  </div>
+                    
+                 <p className={todo.done? "line_through":""}> 
+                   {todo.task} 
+                  </p>   
                 
-                    <div>
-                     <span><BsFillTrashFill className='icon'/></span>
-                    </div>
-            
+                <div>
+                  <span><BsFillTrashFill className='icon'
+                  onClick={()=> handleDelete(todo._id)}
+                  /></span>
+                </div>
                 </div>
             ))
-        }
-    </div>
-  )
-}
+          }
+        </div>
+      )
+    }
 
 export default Home

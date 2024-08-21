@@ -1,37 +1,44 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const cors = require('cors')//cross origin resource sharing
-const TodoModel = require('./Models/Todo')
+const cors = require('cors')
+const todoModel =require('./Models/todo')
 
+require('dotenv').config()
 const app = express()
 app.use(cors())
 app.use(express.json())
-require('dotenv').config()
 db_url= process.env.db_url
-console.log(db_url)
+// console.log("bbbhbj hjbm",db_url)
 mongoose.connect(db_url)
 
-app.get('/get',(req, res) =>{
-    TodoModel.find()
+app.get ('/get',(req,res)=>{
+    todoModel.find()
     .then(result => res.json(result))
     .catch(err => res.json(err))
-})
+}
 
-app.put('/update/:id',(req, res) =>{
+)
+app.put('/update/:id', (req,res) =>{
     const {id} = req.params;
-    TodoModel.findByIdAndUpdate({_id:id},{done: true})
-    .then(result => res.json(result))
-    .catch(err => res.json(err))
+   todoModel.findByIdAndUpdate({_id: id}, {done: true})
+   .then(result=> res.json(result))
+   .catch(err=> res.json(err))
 })
+app.delete('/delete/:id',(req,res) => {
+const {id} =req.params;
+todoModel.findByIdAndDelete({_id: id})
+.then(result=> res.json(result))
+.catch(err=> res.json(err))
+} )
 
-app.post('/add',(req, res) =>{
-    const task = req.body.task
-    TodoModel.create({
-        task: task
-  }).then(result => res.json(result))
-    .catch(err => res.json(err))
+app.post('/add',(req,res) =>{
+    const task =req.body.task;
+    todoModel.create({
+        task :task
+    }).then(reault=> res.json(result))
+    .catch(err => res.json(err ))
 })
-app.listen(3001,()=> {
-    console.log('server is running on p')
-
-    })
+app.listen(3001,() =>{
+   console.log ("Server is Running")
+}
+)
